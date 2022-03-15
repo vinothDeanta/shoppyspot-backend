@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Users;
 
 class SiteController extends Controller
 {
@@ -62,6 +63,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+        //return $this->redirect(['login']);
     }
 
     /**
@@ -94,8 +96,8 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
-        return $this->goHome();
+        return $this->redirect(['login']);
+        //return $this->goHome();
     }
 
     /**
@@ -125,4 +127,31 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionRegister()
+    {
+        $model = new Users();
+        
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                // form inputs are valid, do something here
+                $model->username = $_POST['Users']['username'];
+                $model->user_email = $_POST['Users']['user_email'];
+                $model->password = password_hash($_POST['Users']['password'], PASSWORD_ARGON2I);
+                $model->authKey = md5(random_bytes(5));
+                $model->phone_no = $_POST['Users']['password'];
+                $model->accessToken = password_hash(random_bytes(10), PASSWORD_DEFAULT);
+                $model->city = $_POST['Users']['city'];
+                if($model->save()){
+                    return $this->redirect(['login']);
+                }
+               
+            }
+        }
+
+        return $this->render('register', [
+            'model' => $model,
+        ]);
+    }
+
 }

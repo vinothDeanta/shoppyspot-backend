@@ -36,7 +36,7 @@ class AppAsset extends AssetBundle
         'css/responsive.css',
     ];
     public $js = [
-        'js/jquery-3.5.1.min.js',
+        //'js/jquery-3.5.1.min.js',
         '/js/bootstrap/bootstrap.bundle.min.js',
         'js/icons/feather-icon/feather.min.js',
         'js/icons/feather-icon/feather-icon.js',
@@ -61,7 +61,7 @@ class AppAsset extends AssetBundle
         'js/theme-customizer/customizer.js'
     ];
     public $depends = [
-        // 'yii\web\YiiAsset',
-        // 'yii\bootstrap4\BootstrapAsset',
+        'yii\web\YiiAsset',
+        'yii\bootstrap4\BootstrapAsset',
     ];
 }
