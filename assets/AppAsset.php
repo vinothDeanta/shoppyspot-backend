@@ -34,6 +34,7 @@ class AppAsset extends AssetBundle
         'css/vendors/bootstrap.css',
         'css/color-1.css',
         'css/responsive.css',
+        'css/font-awesome-4.7.0/css/font-awesome.min.css'
     ];
     public $js = [
         //'js/jquery-3.5.1.min.js',

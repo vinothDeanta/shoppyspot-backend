@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\SubCategory;
+use yii\filters\AccessControl;
 
 /**
  * ProductController implements the CRUD actions for TbProducts model.
@@ -28,6 +29,18 @@ class ProductController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['index','create','update','view'],
+                    'rules' => [
+                        // allow authenticated users
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        // everything else is denied
+                    ],
+                ], 
             ]
         );
     }
