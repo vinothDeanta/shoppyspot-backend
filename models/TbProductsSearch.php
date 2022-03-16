@@ -17,8 +17,8 @@ class TbProductsSearch extends TbProducts
     public function rules()
     {
         return [
-            [['product_id', 'category_id', 'sub_category_id', 'color_id', 'size', 'no_of_battery', 'warrently_year'], 'integer'],
-            [['product_name', 'product_desc', 'product_image', 'created_at', 'updated_at', 'brand_name', 'model_number', 'model_name', 'product_fit', 'material_ratio', 'department', 'generic_name', 'country_of_Orgin', 'age_of_use', 'skillset', 'ideal_for', 'occasion', 'primary_product_type_color', 'secondary_product_type_color', 'pattern', 'product_type', 'machine_washable', 'thread_count', 'maximum_wattage', 'Adjustable', 'project_shape', 'body_material', 'product_inner_material', 'handle_with_care', 'mechanism', 'GSM', 'leak_resistance', 'connector', 'connectivity_technology', 'compatible_devices', 'hardware_platform', 'display_technologies', 'special_feature', 'resolution', 'refresh_rate', 'battery_type', 'rechargeable', 'warrently_summary'], 'safe'],
+            [['product_id', 'color_id', 'size', 'no_of_battery', 'warrently_year'], 'integer'],
+            [['product_name', 'category_id', 'sub_category_id',  'product_desc', 'product_image', 'created_at', 'updated_at', 'brand_name', 'model_number', 'model_name', 'product_fit', 'material_ratio', 'department', 'generic_name', 'country_of_Orgin', 'age_of_use', 'skillset', 'ideal_for', 'occasion', 'primary_product_type_color', 'secondary_product_type_color', 'pattern', 'product_type', 'machine_washable', 'thread_count', 'maximum_wattage', 'Adjustable', 'project_shape', 'body_material', 'product_inner_material', 'handle_with_care', 'mechanism', 'GSM', 'leak_resistance', 'connector', 'connectivity_technology', 'compatible_devices', 'hardware_platform', 'display_technologies', 'special_feature', 'resolution', 'refresh_rate', 'battery_type', 'rechargeable', 'warrently_summary'], 'safe'],
         ];
     }
 
@@ -56,13 +56,13 @@ class TbProductsSearch extends TbProducts
             return $dataProvider;
         }
 
+        $query->joinWith('category');
+        $query->joinWith('subCategory');
         // grid filtering conditions
         $query->andFilterWhere([
             'product_id' => $this->product_id,
-            'category_id' => $this->category_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'sub_category_id' => $this->sub_category_id,
             'color_id' => $this->color_id,
             'size' => $this->size,
             'no_of_battery' => $this->no_of_battery,
@@ -109,7 +109,9 @@ class TbProductsSearch extends TbProducts
             ->andFilterWhere(['like', 'refresh_rate', $this->refresh_rate])
             ->andFilterWhere(['like', 'battery_type', $this->battery_type])
             ->andFilterWhere(['like', 'rechargeable', $this->rechargeable])
-            ->andFilterWhere(['like', 'warrently_summary', $this->warrently_summary]);
+            ->andFilterWhere(['like', 'warrently_summary', $this->warrently_summary])
+            ->andFilterWhere(['like', 'tb_category.category_name', $this->category_id])
+            ->andFilterWhere(['like', 'tb_sub_category.sub_category_name', $this->sub_category_id]);
 
         return $dataProvider;
     }
