@@ -294,7 +294,6 @@ AppAsset::register($this);
                                     <ul class="sidebar-submenu">
                                     <li>
                                         <?= Html::a('Category List', ['category/index'], ['data' => ['method' => 'post']]) ?>    
-                                         <!-- <a href="index.php?r=product/index">Project List</a> -->
                                     </li>
                                     <li>
                                         <?= Html::a('Category Create', ['category/create'], ['data' => ['method' => 'post']]) ?>
@@ -303,14 +302,13 @@ AppAsset::register($this);
                                 </li>
 
                                 <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
-                                <i class="fa fa-certificate" style="padding-right: 13px;" aria-hidden="true"></i><span>Category                </span></a>
+                                <i class="fa fa-certificate" style="padding-right: 13px;" aria-hidden="true"></i><span>Sub Category                </span></a>
                                     <ul class="sidebar-submenu">
                                     <li>
-                                        <?= Html::a('Sub Category List', ['subcategory/index'], ['data' => ['method' => 'post']]) ?>    
-                                         <!-- <a href="index.php?r=product/index">Project List</a> -->
+                                        <?= Html::a('Sub Category List', ['sub/index'], ['data' => ['method' => 'post']]) ?>    
                                     </li>
                                     <li>
-                                        <?= Html::a('Sub Category Create', ['subcategory/create'], ['data' => ['method' => 'post']]) ?>
+                                        <?= Html::a('Sub Category Create', ['sub/create'], ['data' => ['method' => 'post']]) ?>
                                     </li>
                                     </ul>
                                 </li>

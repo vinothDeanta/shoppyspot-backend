@@ -7,6 +7,7 @@ use app\models\SubCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 
 /**
@@ -28,6 +29,18 @@ class SubController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['index','create','update','view'],
+                    'rules' => [
+                        // allow authenticated users
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        // everything else is denied
+                    ],
+                ], 
             ]
         );
     }

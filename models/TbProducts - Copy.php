@@ -12,8 +12,8 @@ use Yii;
  * @property string $product_name
  * @property string|null $product_desc
  * @property string|null $product_image
- * @property string $created_at
- * @property string $updated_at
+ * @property string|null $created_at
+ * @property string|null $updated_at
  * @property string|null $brand_name
  * @property string|null $model_number
  * @property string|null $model_name
@@ -59,7 +59,7 @@ use Yii;
  * @property int|null $warrently_year
  *
  * @property TbCategory $category
- * @property SubCategory $subcategory
+ * @property SubCategory $subCategory
  */
 class TbProducts extends \yii\db\ActiveRecord
 {
@@ -78,7 +78,7 @@ class TbProducts extends \yii\db\ActiveRecord
     {
         return [
             [['category_id', 'sub_category_id', 'color_id', 'size', 'no_of_battery', 'warrently_year'], 'integer'],
-            [['product_name', 'category_id'], 'required'],
+            [['product_name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['product_name', 'product_image', 'brand_name', 'model_number', 'model_name', 'product_fit', 'material_ratio', 'department', 'generic_name', 'country_of_Orgin', 'age_of_use', 'skillset', 'ideal_for', 'occasion', 'primary_product_type_color', 'secondary_product_type_color', 'pattern', 'product_type', 'maximum_wattage', 'body_material', 'product_inner_material', 'handle_with_care', 'GSM', 'compatible_devices', 'hardware_platform', 'display_technologies', 'refresh_rate', 'warrently_summary'], 'string', 'max' => 255],
             [['product_desc', 'special_feature'], 'string', 'max' => 1000],
@@ -158,7 +158,7 @@ class TbProducts extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Subcategory]].
+     * Gets query for [[SubCategory]].
      *
      * @return \yii\db\ActiveQuery
      */

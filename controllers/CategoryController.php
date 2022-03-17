@@ -7,6 +7,7 @@ use app\models\CategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * CategoryController implements the CRUD actions for TbCategory model.
@@ -27,6 +28,18 @@ class CategoryController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'only' => ['index','create','update','view'],
+                    'rules' => [
+                        // allow authenticated users
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        // everything else is denied
+                    ],
+                ], 
             ]
         );
     }

@@ -57,6 +57,10 @@ use Yii;
  * @property int|null $no_of_battery
  * @property string|null $warrently_summary
  * @property int|null $warrently_year
+ * @property string|null $discount
+ * @property int|null $product_instock
+ * @property int|null $product_quantity
+ * @property string|null $product_price
  *
  * @property TbCategory $category
  * @property SubCategory $subCategory
@@ -77,10 +81,10 @@ class TbProducts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'sub_category_id', 'color_id', 'size', 'no_of_battery', 'warrently_year'], 'integer'],
+            [['category_id', 'sub_category_id', 'color_id', 'size', 'no_of_battery', 'warrently_year', 'product_instock', 'product_quantity'], 'integer'],
             [['product_name'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['product_name', 'product_image', 'brand_name', 'model_number', 'model_name', 'product_fit', 'material_ratio', 'department', 'generic_name', 'country_of_Orgin', 'age_of_use', 'skillset', 'ideal_for', 'occasion', 'primary_product_type_color', 'secondary_product_type_color', 'pattern', 'product_type', 'maximum_wattage', 'body_material', 'product_inner_material', 'handle_with_care', 'GSM', 'compatible_devices', 'hardware_platform', 'display_technologies', 'refresh_rate', 'warrently_summary'], 'string', 'max' => 255],
+            [['product_name', 'product_image', 'brand_name', 'model_number', 'model_name', 'product_fit', 'material_ratio', 'department', 'generic_name', 'country_of_Orgin', 'age_of_use', 'skillset', 'ideal_for', 'occasion', 'primary_product_type_color', 'secondary_product_type_color', 'pattern', 'product_type', 'maximum_wattage', 'body_material', 'product_inner_material', 'handle_with_care', 'GSM', 'compatible_devices', 'hardware_platform', 'display_technologies', 'refresh_rate', 'warrently_summary', 'discount', 'product_price'], 'string', 'max' => 255],
             [['product_desc', 'special_feature'], 'string', 'max' => 1000],
             [['machine_washable', 'thread_count', 'Adjustable', 'project_shape', 'mechanism', 'leak_resistance', 'connector', 'connectivity_technology', 'resolution', 'battery_type', 'rechargeable'], 'string', 'max' => 45],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => TbCategory::className(), 'targetAttribute' => ['category_id' => 'category_id']],
@@ -144,6 +148,10 @@ class TbProducts extends \yii\db\ActiveRecord
             'no_of_battery' => 'No Of Battery',
             'warrently_summary' => 'Warrently Summary',
             'warrently_year' => 'Warrently Year',
+            'discount' => 'Discount',
+            'product_instock' => 'Product Instock',
+            'product_quantity' => 'Product Quantity',
+            'product_price' => 'Product Price',
         ];
     }
 
