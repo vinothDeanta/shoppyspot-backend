@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\TbCategory;
-
+use kartik\widgets\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TbProducts */
@@ -17,7 +17,9 @@ use app\models\TbCategory;
             <div class="card">
                 <div class="card-body">
                 <div class="form theme-form projectcreate">
-                    <?php $form = ActiveForm::begin(); ?>
+                    <?php $form = ActiveForm::begin([
+    'options'=>['enctype'=>'multipart/form-data'] // important
+]); ?>
                         <div class="row">
                             <div class="col-sm-12">
                                 <?= $form->field($model, 'product_name')->textInput(['maxlength' => true]) ?>
@@ -57,8 +59,16 @@ use app\models\TbCategory;
                             </div> -->
                                
 
-                                <?= $form->field($model, 'product_image')->textInput(['maxlength' => true]) ?>
+                                <?php // $form->field($model, 'product_image[]')->widget(FileInput::classname(), ['options' => ['multiple' => 'true'],]) ?>
 
+                                <?php
+                                echo '<label class="control-label">Add Attachments</label>';
+                                echo FileInput::widget([
+                                    'model' => $model,
+                                    'attribute' => 'product_image[]',
+                                    'options' => ['multiple' => true]
+                                ]); 
+                                ?>
                                 <?= $form->field($model, 'created_at')->textInput() ?>
 
                                 <?= $form->field($model, 'updated_at')->textInput() ?>
