@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\TbCategory;
 use kartik\widgets\FileInput;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TbProducts */
@@ -29,7 +30,7 @@ use kartik\widgets\FileInput;
                             <div class="row">
                                 <div class="col-sm-6">
                                  
-                                    <?= $form->field($model, 'category_id')->dropDownList(
+                                    <?php /* $form->field($model, 'category_id')->dropDownList(
                                                     ArrayHelper::map(TbCategory::find()->all(), 'category_id', 'category_name'),
                                                     [
                                                         'prompt'=>'Select any category','id'=>'category_dropdown',
@@ -38,17 +39,37 @@ use kartik\widgets\FileInput;
                                                                 $("select#sub_category_dropdown").html(data);
                                                             });
                                                         '
-                                                    ]);  ?>
+                                                    ]); */ ?>
+
+                                    <?php  
+                                        echo $form->field($model, 'category_id')->widget(Select2::classname(), [
+                                            'data' => ArrayHelper::map(TbCategory::find()->all(), 'category_id', 'category_name'),
+                                            'options' => ['placeholder' => 'Select a Category ...'],
+                                            'pluginOptions' => [
+                                                'allowClear' => true
+                                            ],
+                                        ]);
+                                    ?>
                         
 
                                                        
                                 </div>
                                 <div class="col-sm-6">
-                                    <?= $form->field($model, 'sub_category_id')->dropDownList(
+                                    <?php /* $form->field($model, 'sub_category_id')->dropDownList(
                                                     ArrayHelper::map(SubCategory::find()->all(), 'sub_category_id', 'sub_category_name'),
                                                     [
                                                         'prompt'=>'Select any sub-category','id'=>'sub_category_dropdown',
-                                                    ]);  ?>
+                                                    ]);  */?>
+                                    <?php 
+                                            echo $form->field($model, 'sub_category_id')->widget(Select2::classname(), [
+                                                'data' => ArrayHelper::map(SubCategory::find()->all(), 'sub_category_id', 'sub_category_name'),
+                                                'options' => ['placeholder' => 'Select a Sub Category ...'],
+                                                'pluginOptions' => [
+                                                    'allowClear' => true
+                                                ],
+                                            ]);
+                                    ?>
+
 
                                 </div>
                             </div>
@@ -57,18 +78,11 @@ use kartik\widgets\FileInput;
                                    //$form->field($model, 'sddd[]')->fileInput(['multiple' => true, 'class' => 'btn btn-default '])->label("Upload Image");
                                 </div>
                             </div> -->
-                               
-
-                                <?php // $form->field($model, 'product_image[]')->widget(FileInput::classname(), ['options' => ['multiple' => 'true'],]) ?>
-
-                                <?php
-                                echo '<label class="control-label">Add Attachments</label>';
-                                echo FileInput::widget([
-                                    'model' => $model,
-                                    'attribute' => 'product_image[]',
-                                    'options' => ['multiple' => true]
-                                ]); 
-                                ?>
+                            <div class="row">   
+                                <div class="col-sm-11">
+                                    <?= $form->field($model, 'files[]')->widget(FileInput::classname(), ['options' => ['multiple' => 'true'],]) ?>
+                                </div>
+                            </div>
                                 <?= $form->field($model, 'created_at')->textInput() ?>
 
                                 <?= $form->field($model, 'updated_at')->textInput() ?>

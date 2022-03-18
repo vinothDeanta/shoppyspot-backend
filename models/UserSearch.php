@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\SubCategory;
+use app\models\Users;
 
 /**
- * SubCategorySearch represents the model behind the search form of `app\models\SubCategory`.
+ * UserSearch represents the model behind the search form of `app\models\Users`.
  */
-class SubCategorySearch extends SubCategory
+class UserSearch extends Users
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class SubCategorySearch extends SubCategory
     public function rules()
     {
         return [
-            [['sub_category_id'], 'integer'],
-            [['sub_category_name', 'category_id', 'sub_category_description'], 'safe'],
+            [['id'], 'integer'],
+            [['user_email', 'username', 'last_name', 'phone_no', 'city', 'authKey', 'accessToken', 'password'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class SubCategorySearch extends SubCategory
      */
     public function search($params)
     {
-        $query = SubCategory::find();
+        $query = Users::find();
 
         // add conditions that should always apply here
 
@@ -55,15 +55,20 @@ class SubCategorySearch extends SubCategory
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->joinWith('category');
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'sub_category_id' => $this->sub_category_id
+            'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'sub_category_name', $this->sub_category_name])
-            ->andFilterWhere(['like', 'sub_category_description', $this->sub_category_description])
-            ->andFilterWhere(['like', 'tb_category.category_name', $this->category_id]);
+        $query->andFilterWhere(['like', 'user_email', $this->user_email])
+            ->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'last_name', $this->last_name])
+            ->andFilterWhere(['like', 'phone_no', $this->phone_no])
+            ->andFilterWhere(['like', 'city', $this->city])
+            ->andFilterWhere(['like', 'authKey', $this->authKey])
+            ->andFilterWhere(['like', 'accessToken', $this->accessToken])
+            ->andFilterWhere(['like', 'password', $this->password]);
 
         return $dataProvider;
     }

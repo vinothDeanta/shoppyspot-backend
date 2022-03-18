@@ -8,7 +8,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\SubCategory;
+use app\models\TbProductsImages;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
 
 /**
  * ProductController implements the CRUD actions for TbProducts model.
@@ -85,6 +87,15 @@ class ProductController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                //Mutiple File upload 
+                $model->files = UploadedFile::getInstances($model, 'files');
+                foreach ($model->files as $key => $file) {
+                    $modelImages = new TbProductsImages();
+                    $file->saveAs('uploads/'. $file->baseName . '.' . $file->extension);//Upload files to server
+                    $modelImages->filename = 'uploads/' . $file->baseName . '.' . $file->extension;//Save file names in database- '**' is for separating images
+                    $modelImages->product_id = $model->product_id;
+                    $modelImages->save();
+                }
                 return $this->redirect(['view', 'product_id' => $model->product_id]);
             }
         } else {
