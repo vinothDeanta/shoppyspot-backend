@@ -7,6 +7,7 @@ $config = [
     'id' => 'basic',
     'name' => 'Shoppy Spot',
     'basePath' => dirname(__DIR__),
+    'defaultRoute' => 'site/login',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',

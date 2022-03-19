@@ -10,34 +10,65 @@ use yii\bootstrap4\Html;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+    .login-form .form-group label {
+        font-weight: 600;
+        text-transform: capitalize;
+        margin-bottom: 5px;
+        font-family: "Roboto",sans-serif;
+        color: #1e2f65;
+    }
+
+    .invalid-feedback{
+        padding-left: 0px;
+    }
+
+</style>
 <div class="row">
     <div class="col-12">
         <div class="login-card">
         <?php $form = ActiveForm::begin([
             'id' => 'login-form',
             'layout' => 'horizontal',
+            'options' => [
+                'class' => 'theme-form login-form'
+            ],
             'fieldConfig' => [
                 'template' => "{label}\n{input}\n{error}",
-                'labelOptions' => ['class' => 'col-lg-1 col-form-label mr-lg-3'],
+                'labelOptions' => ['class' => ''],
                 'inputOptions' => ['class' => 'col-lg-3 form-control'],
                 'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
             ],
         ]); ?>
+            <h4>Login</h4>
+              <h6>Welcome back! Log in to your account.</h6>
+                <?php
+                    $fieldOptions3 = [
+                        'options' => ['class' => 'form-group'],
+                        // 'inputTemplate' => "{input}<span class='input-group-text'><i class='fa fa-user' aria-hidden='true'></i></span>"
+                    ];
 
-            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                    $fieldrememberMe = [
+                        'options' => ['class' => 'form-group field-loginform-rememberme']
+                    ];
 
-            <?= $form->field($model, 'password')->passwordInput() ?>
+                ?>
 
-            <?= $form->field($model, 'rememberMe')->checkbox([
-                'template' => "<div class=\"offset-lg-1 col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-            ]) ?>
 
-            <div class="form-group">
-                <div class="offset-lg-1 col-lg-11">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= $form->field($model, 'username', $fieldOptions3)->textInput(['autofocus' => true]) ?>
+
+                <?= $form->field($model, 'password', $fieldOptions3)->passwordInput() ?>
+
+                <?= $form->field($model, 'rememberMe', $fieldrememberMe)->checkbox([
+                    'template' => "<div class=\"offset-lg-1 col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
+                ]) ?>
+
+                <div class="form-group">
+                    <div class="offset-lg-1 col-lg-11">
+                        <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    </div>
                 </div>
-            </div>
-            <p>Don't have account? <?= Html::a('Register', ['site/register'], ['data' => ['method' => 'post']]) ?></p>
+                <p>Don't have account? <?= Html::a('Register', ['site/register'], ['data' => ['method' => 'post']]) ?></p>
 
         <?php ActiveForm::end(); ?>
 

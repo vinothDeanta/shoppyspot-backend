@@ -45,8 +45,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             'id' => 'ID',
-            'user_email' => 'User Email',
-            'username' => 'User Name',
+            'user_email' => 'Email Address',
+            'username' => 'Username',
             'last_name' => 'Last Name',
             'phone_no' => 'Phone No',
             'city' => 'City',

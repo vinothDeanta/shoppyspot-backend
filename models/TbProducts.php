@@ -154,6 +154,8 @@ class TbProducts extends \yii\db\ActiveRecord
             'product_instock' => 'Product Instock',
             'product_quantity' => 'Product Quantity',
             'product_price' => 'Product Price',
+            'template_id' => 'Template Name',
+            'user_id'=> 'User Name'
         ];
     }
 
