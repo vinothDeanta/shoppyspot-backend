@@ -11,6 +11,7 @@ use app\models\SubCategory;
 use app\models\TbProductsImages;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use app\models\TbTemplatePermission;
 
 /**
  * ProductController implements the CRUD actions for TbProducts model.
@@ -33,7 +34,7 @@ class ProductController extends Controller
                 ],
                 'access' => [
                     'class' => AccessControl::className(),
-                    'only' => ['index','create','update','view'],
+                    'only' => ['index','create','update','view','select','template'],
                     'rules' => [
                         // allow authenticated users
                         [
@@ -75,6 +76,44 @@ class ProductController extends Controller
             'model' => $this->findModel($product_id),
         ]);
     }
+
+    public function actionSelect()
+    {
+        $model = new TbTemplatePermission;
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())){
+                $templateId =$_POST['TbTemplatePermission']['template_id'];
+                // return $this->render('create', [
+                //     'permissionlist'=> $templateId
+                // ]);
+                $this->actionTemplate($templateId);
+            }
+        }
+
+        return $this->render('template', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionTemplate($id)
+    {   
+        $permissionlist = TbTemplatePermission::findOne(['template_id' => $id]);
+        $data = [];
+        foreach ($permissionlist as $key => $permissionlistvalue) {
+            if($permissionlistvalue == 1){
+                $data[] = "#".$key;
+            }
+        }
+       
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return [
+            'result' => $data,
+            'status' => 'success',
+        ];
+
+    }
+
+
 
     /**
      * Creates a new TbProducts model.
