@@ -314,20 +314,36 @@ AppAsset::register($this);
                                 </li>
 
                             
-                                    <li class="sidebar-list">
-                                        <a class="sidebar-link sidebar-title" href="#">
-                                            <i class="fa fa-users" style="padding-right: 13px;" aria-hidden="true"></i>
-                                            <span>Users</span>
-                                        </a>
-                                        <ul class="sidebar-submenu">
-                                            <li>
-                                                <?= Html::a('Users List', ['user/index'], ['data' => ['method' => 'post']]) ?>    
-                                            </li>
-                                            <li>
-                                                <?= Html::a('User Create', ['user/create'], ['data' => ['method' => 'post']]) ?>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="#">
+                                        <i class="fa fa-users" style="padding-right: 13px;" aria-hidden="true"></i>
+                                        <span>Users</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <?= Html::a('Users List', ['user/index'], ['data' => ['method' => 'post']]) ?>    
+                                        </li>
+                                        <li>
+                                            <?= Html::a('User Create', ['user/create'], ['data' => ['method' => 'post']]) ?>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="#">
+                                        <i class="fa fa-book" style="padding-right: 13px;" aria-hidden="true"></i>
+                                        <span>Templates</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <?= Html::a('Template List', ['permission/index'], ['data' => ['method' => 'post']]) ?>    
+                                        </li>
+                                        <li>
+                                            <?= Html::a('Template Create', ['permission/create'], ['data' => ['method' => 'post']]) ?>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 </ul>
                                 <!-- <div class="sidebar-img-section">
                                 <div class="sidebar-img-content">
