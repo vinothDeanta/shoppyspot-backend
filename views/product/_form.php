@@ -48,6 +48,13 @@ use kartik\select2\Select2;
                                             'pluginOptions' => [
                                                 'allowClear' => true
                                             ],
+                                            'pluginEvents' => [
+                                                "select2:select" => "function() { 
+                                                    $.get('subcategorylist?id="."'+$(this).val(), function(data){
+                                                        $('select#tbproducts-sub_category_id').html(data);
+                                                    });
+                                                 }",
+                                             ]
                                         ]);
                                     ?>
                         
@@ -84,6 +91,11 @@ use kartik\select2\Select2;
                                 </div>
                             </div>
                                 <?= $form->field($model, 'created_at')->textInput() ?>
+                                 <!-- <div class="form-group field-tbproducts-created_at">
+                                    <label class="control-label" for="tbproducts-created_at">Created At</label>
+                                    <input type="datetime-local" id="tbproducts-created_at" class="form-control" name="TbProducts[created_at]" value="<?php echo $model->created_at; ?>" >
+                                    <div class="help-block"></div>
+                                </div> -->
 
                                 <?= $form->field($model, 'updated_at')->textInput() ?>
 
