@@ -8,6 +8,8 @@ use app\models\TbCategory;
 use kartik\widgets\FileInput;
 use kartik\select2\Select2;
 use app\models\TbTemplatePermission;
+use app\models\TbColor;
+use app\models\TbSize;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TbProducts */
@@ -63,17 +65,6 @@ use app\models\TbTemplatePermission;
                                     </div>
 
                                     <div class="col-sm-6  product-details" id="category_id">
-                                        <?php /* $form->field($model, 'category_id')->dropDownList(
-                                                        ArrayHelper::map(TbCategory::find()->all(), 'category_id', 'category_name'),
-                                                        [
-                                                            'prompt'=>'Select any category','id'=>'category_dropdown',
-                                                            'Onchange' => '
-                                                                $.get("index.php?r=product/subcategorylist&id='.'"+$(this).val(), function(data){
-                                                                    $("select#sub_category_dropdown").html(data);
-                                                                });
-                                                            '
-                                                        ]); */ ?>
-
                                         <?php  
                                             echo $form->field($model, 'category_id')->widget(Select2::classname(), [
                                                 'data' => ArrayHelper::map(TbCategory::find()->all(), 'category_id', 'category_name'),
@@ -154,10 +145,37 @@ use app\models\TbTemplatePermission;
                                         <?= $form->field($model, 'model_name')->textInput(['maxlength' => true]) ?>
                                     </div>
                                     <div class="col-sm-11  product-details" id="color_id">
-                                        <?= $form->field($model, 'color_id')->textInput() ?>
+                                        
+                                        <?php
+                                            echo $form->field($model, 'color_id')->widget(Select2::classname(), [
+                                                'data' => ArrayHelper::map(TbColor::find()->all(), 'color_id', 'color_name'),
+                                                'options' => [
+                                                    'placeholder' => 'Select a Color ...',
+                                                    'value' =>explode(',', $model->color_id),
+                                                    'multiple' => true
+                                                ],
+                                                'pluginOptions' => [
+                                                    'allowClear' => true
+                                                ],
+                                            ]);
+                                        ?>
+
+
                                     </div>
                                     <div class="col-sm-11  product-details" id="size">
-                                        <?= $form->field($model, 'size')->textInput() ?>
+                                    <?php
+                                            echo $form->field($model, 'size')->widget(Select2::classname(), [
+                                                'data' => ArrayHelper::map(TbSize::find()->all(), 'size_id', 'size_name'),
+                                                'options' => [
+                                                    'placeholder' => 'Select a Color ...',
+                                                    'value' =>explode(',', $model->size),
+                                                    'multiple' => true,
+                                                ],
+                                                'pluginOptions' => [
+                                                    'allowClear' => true
+                                                ],
+                                            ]);
+                                        ?>
                                     </div>
                                     <div class="col-sm-11  product-details" id="product_fit">
                                     <?= $form->field($model, 'product_fit')->textInput(['maxlength' => true]) ?>
