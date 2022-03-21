@@ -40,7 +40,7 @@ use app\models\TbTemplatePermission;
                                         'pluginEvents' => [
                                             "select2:select" => "function() { 
                                                 $.get('template?id="."'+$(this).val(), function(data){
-                                                    console.log(data);
+                                                    $('.product-details').hide();
                                                     var array = $.map(data.result, function(value, index) {
                                                         $(value).show();
                                                     });

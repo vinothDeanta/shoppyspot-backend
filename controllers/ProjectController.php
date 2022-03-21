@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\models\TbCategory;
-use app\models\subCategory;
+use app\models\SubCategory;
 use app\models\TbProducts;
 use yii\filters\VerbFilter;
 
@@ -23,16 +23,19 @@ class ProjectController extends \yii\web\Controller
                         'delete' => ['POST'],
                     ],
                 ],
-                'corsFilter'  => [
-                    'class' => \yii\filters\Cors::className(),
-                    'cors'  => [
-                        // restrict access to domains:
-                        'Origin'                           => ['*'],
-                        'Access-Control-Request-Method'    => ['POST','GET', 'DELETE', 'PUT'],
-                        'Access-Control-Allow-Credentials' => true,
-                        'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
-                    ],
-                ],
+                // 'corsFilter'  => [
+                //     'class' => \yii\filters\Cors::className(),
+                //     'cors'  => [
+                //         // restrict access to domains:
+                //         'Origin'                           => ['*'],
+                //         'Access-Control-Request-Method'    => ['POST','GET', 'DELETE', 'PUT'],
+                //         'Access-Control-Allow-Credentials' => true,
+                //         'Access-Control-Max-Age'           => 3600,                 // Cache (seconds)
+                //     ],
+                // ],
+                'corsFilter' => [
+                    'class' => \yii\filters\Cors::class,
+                ]
             ]
         );
     }
@@ -63,7 +66,7 @@ class ProjectController extends \yii\web\Controller
                 $data[$key]['title'] = $productValue->product_name;
                 $data[$key]['description'] = $productValue->product_desc;
                 $data[$key]['category'] = TbCategory::findOne($productValue->category_id)->category_name;
-                $data[$key]['sub_category'] = subCategory::findOne($productValue->sub_category_id)->category_name;
+                $data[$key]['sub_category'] = SubCategory::findOne($productValue->sub_category_id)->sub_category_name;
                 $data[$key]['price'] = $productValue->product_price;
                 $data[$key]['stock'] = $productValue->product_instock;
                 $data[$key]['product_quantity'] = $productValue->product_quantity;
@@ -71,11 +74,11 @@ class ProjectController extends \yii\web\Controller
                 $data[$key]['type'] = $productValue->product_type;
                 $data[$key]['size'] = $productValue->size;
                 $data[$key]['color_id'] = $productValue->size;
-                $data[$key]['images'] = '';
-                $data[$key]['variants'] = '';
+                $data[$key]['discount'] = "40";
+                $data[$key]['images'] = [["image_id" => "111", "id" => "1.1", "alt" => "yellow", "src" => "/assets/images/pro3/39.jpg", "__typename" => "Images"]];
+                $data[$key]['variants'] = [["id"=> "1.1", "sku"=> "sku1", "size"=> "s", "color"=> "yellow", "image_id"=> 111, "__typename"=> "Variants"]];
             }
         }
-
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         return [
             'data' => $data,
