@@ -13,6 +13,7 @@ use Yii;
  * @property string|null $status
  * @property string|null $createddate
  * @property string|null $updateddate
+ * @property string|null $filepath
  */
 class TbProductsImages extends \yii\db\ActiveRecord
 {
@@ -33,7 +34,7 @@ class TbProductsImages extends \yii\db\ActiveRecord
             [['product_id'], 'required'],
             [['product_id', 'status'], 'integer'],
             [['createddate', 'updateddate'], 'safe'],
-            [['filename'], 'string', 'max' => 255],
+            [['filename', 'filepath'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,6 +47,7 @@ class TbProductsImages extends \yii\db\ActiveRecord
             'id' => 'ID',
             'product_id' => 'Product ID',
             'filename' => 'Filename',
+            'filepath' => 'Filename',
             'status' => 'Status',
             'createddate' => 'Createddate',
             'updateddate' => 'Updateddate',

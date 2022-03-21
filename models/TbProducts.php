@@ -18,8 +18,8 @@ use Yii;
  * @property string|null $model_number
  * @property string|null $model_name
  * @property int|null $sub_category_id
- * @property int|null $color_id
- * @property int|null $size
+ * @property string|null $color_id
+ * @property string|null $size
  * @property string|null $product_fit
  * @property string|null $material_ratio
  * @property string|null $department
@@ -83,9 +83,9 @@ class TbProducts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_id', 'sub_category_id', 'color_id', 'size', 'no_of_battery', 'warrently_year', 'product_instock', 'product_quantity'], 'integer'],
+            [['category_id', 'sub_category_id', 'no_of_battery', 'warrently_year', 'product_instock', 'product_quantity'], 'integer'],
             [['product_name'], 'required'],
-            [['created_at', 'updated_at', 'files'], 'safe'],
+            [['created_at', 'updated_at', 'files', 'color_id', 'size', 'template_id'], 'safe'],
             [['product_name', 'product_image', 'brand_name', 'model_number', 'model_name', 'product_fit', 'material_ratio', 'department', 'generic_name', 'country_of_Orgin', 'age_of_use', 'skillset', 'ideal_for', 'occasion', 'primary_product_type_color', 'secondary_product_type_color', 'pattern', 'product_type', 'maximum_wattage', 'body_material', 'product_inner_material', 'handle_with_care', 'GSM', 'compatible_devices', 'hardware_platform', 'display_technologies', 'refresh_rate', 'warrently_summary', 'discount', 'product_price'], 'string', 'max' => 255],
             [['product_desc', 'special_feature'], 'string', 'max' => 1000],
             [['machine_washable', 'thread_count', 'Adjustable', 'project_shape', 'mechanism', 'leak_resistance', 'connector', 'connectivity_technology', 'resolution', 'battery_type', 'rechargeable'], 'string', 'max' => 45],

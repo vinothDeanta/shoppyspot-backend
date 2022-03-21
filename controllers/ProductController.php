@@ -125,13 +125,23 @@ class ProductController extends Controller
         $model = new TbProducts();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+
+            if ($model->load($this->request->post())) {
+
+                $model->color_id = implode(",", \Yii::$app->request->post( 'TbProducts' )['color_id']); //convert the array into string
+                $model->size = implode(",", \Yii::$app->request->post( 'TbProducts' )['size']); //convert the array into string
+                $model->user_id = \Yii::$app->user->identity->id;
+                $model->save(); 
+
                 //Mutiple File upload 
                 $model->files = UploadedFile::getInstances($model, 'files');
                 foreach ($model->files as $key => $file) {
                     $modelImages = new TbProductsImages();
-                    $file->saveAs('uploads/'. $file->baseName . '.' . $file->extension);//Upload files to server
-                    $modelImages->filename = 'uploads/' . $file->baseName . '.' . $file->extension;//Save file names in database- '**' is for separating images
+                    $filepath = 'uploads/'.date("YmdHis")."_".microtime().'.' . $file->extension;
+                    $filepath = str_replace(" ","_", $filepath);
+                    $file->saveAs($filepath);
+                    $modelImages->filename = $file->baseName . '.' . $file->extension;
+                    $modelImages->filepath = $filepath;
                     $modelImages->product_id = $model->product_id;
                     $modelImages->save();
                 }
@@ -157,7 +167,11 @@ class ProductController extends Controller
     {
         $model = $this->findModel($product_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->color_id = implode(",", \Yii::$app->request->post( 'TbProducts' )['color_id']); //convert the array into string
+            $model->size = implode(",", \Yii::$app->request->post( 'TbProducts' )['size']); //convert the array into string
+            $model->save();  
+
             return $this->redirect(['view', 'product_id' => $model->product_id]);
         }
 

@@ -254,7 +254,7 @@ AppAsset::register($this);
                                 </li>
                                 <li class="sidebar-list">
                                     <label class="badge badge-light-primary">2</label>
-                                    <a class="sidebar-link sidebar-title" href="#">
+                                    <a class="sidebar-link sidebar-title" href="site/index">
                                         <span class="lan-3">Dashboard</span>
                                     </a>
                                 </li>
@@ -343,6 +343,24 @@ AppAsset::register($this);
                                         </li>
                                     </ul>
                                 </li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title" href="#">
+                                        <i class="fa fa-book" style="padding-right: 13px;" aria-hidden="true"></i>
+                                        <span>Product Attribute</span>
+                                    </a>
+                                    <ul class="sidebar-submenu">
+                                        <li>
+                                            <?= Html::a('Size List', ['size/index'], ['data' => ['method' => 'post']]) ?>    
+                                        </li>
+                                        <li>
+                                            <?= Html::a('Color List', ['color/index'], ['data' => ['method' => 'post']]) ?>    
+                                        </li>
+                                       
+                                    </ul>
+                                </li>
+
+
 
                                 </ul>
                                 <!-- <div class="sidebar-img-section">

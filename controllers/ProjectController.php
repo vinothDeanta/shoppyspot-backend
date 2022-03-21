@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\TbCategory;
 use app\models\SubCategory;
 use app\models\TbProducts;
+use app\models\TbProductsImages;
 use yii\filters\VerbFilter;
 
 class ProjectController extends \yii\web\Controller
@@ -75,7 +76,20 @@ class ProjectController extends \yii\web\Controller
                 $data[$key]['size'] = $productValue->size;
                 $data[$key]['color_id'] = $productValue->size;
                 $data[$key]['discount'] = "40";
-                $data[$key]['images'] = [["image_id" => "111", "id" => "1.1", "alt" => "yellow", "src" => "/assets/images/pro3/39.jpg", "__typename" => "Images"]];
+                $imageDetails= TbProductsImages::find()->where(['product_id'=>$productValue->product_id])
+                ->all();
+                $imageList = [];
+                if(!empty($imageDetails) > 0){
+                    foreach ($imageDetails as $key => $imagevalue) {
+                       $imageList[$key]['id'] = $imagevalue->id;
+                       $altText = explode("/", $imagevalue->filename);
+                       $imageList[$key]['alt'] = $altText[1];
+                       $imageList[$key]['src'] = $imagevalue->filename;
+                    }
+                     
+                }
+
+                $data[$key]['images'] = $imageList;
                 $data[$key]['variants'] = [["id"=> "1.1", "sku"=> "sku1", "size"=> "s", "color"=> "yellow", "image_id"=> 111, "__typename"=> "Variants"]];
             }
         }
@@ -113,7 +127,19 @@ class ProjectController extends \yii\web\Controller
                 $data['type'] = $productValue->product_type;
                 $data['size'] = $productValue->size;
                 $data['color_id'] = $productValue->size;
-                $data['images'] = '';
+                $imageDetails= TbProductsImages::find()->where(['product_id'=>$productValue->product_id])
+                ->all();
+                $imageList = [];
+                if(!empty($imageDetails) > 0){
+                    foreach ($imageDetails as $key => $imagevalue) {
+                       $imageList[$key]['id'] = $imagevalue->id;
+                       $altText = explode("/", $imagevalue->filename);
+                       $imageList[$key]['alt'] = $altText[1];
+                       $imageList[$key]['src'] = $imagevalue->filename;
+                    }
+                     
+                }
+                $data['images'] = $imageList;
                 $data['variants'] = '';
         }
         
