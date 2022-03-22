@@ -254,9 +254,7 @@ AppAsset::register($this);
                                 </li>
                                 <li class="sidebar-list">
                                     <label class="badge badge-light-primary">2</label>
-                                    <a class="sidebar-link sidebar-title" href="site/index">
-                                        <span class="lan-3">Dashboard</span>
-                                    </a>
+                                    <?= Html::a('<span class="lan-3">Dashboard</span>', ['site/index'],['class'=>'sidebar-link sidebar-title']) ?> 
                                 </li>
                             
                                 <li class="sidebar-list">

@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'fieldConfig' => [
                 'template' => "{label}\n{input}\n{error}",
                 'labelOptions' => ['class' => ''],
-                'inputOptions' => ['class' => 'col-lg-3 form-control'],
+                'inputOptions' => ['class' => 'col-lg-12 form-control'],
                 'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
             ],
         ]); ?>

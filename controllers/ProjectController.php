@@ -80,15 +80,15 @@ class ProjectController extends \yii\web\Controller
                 $data[$key]['type'] = $productValue->product_type;
                 $data[$key]['size'] = $productValue->size;
                 $data[$key]['color_id'] = $productValue->size;
-                $data[$key]['discount'] = "40";
+                $data[$key]['discount'] =  $productValue->discount;
                 $imageDetails= TbProductsImages::find()->where(['product_id'=>$productValue->product_id])
                 ->all();
                 $imageList = [];
                 if(!empty($imageDetails) > 0){
-                    foreach ($imageDetails as $key => $imagevalue) {
-                       $imageList[$key]['id'] = $imagevalue->id;
-                       $imageList[$key]['alt'] = $imagevalue->filename;
-                       $imageList[$key]['src'] = "http://shoppyspot.com/shoppyspot-backend/web/".$imagevalue->filepath;
+                    foreach ($imageDetails as $imagekey => $imagevalue) {
+                       $imageList[$imagekey]['id'] = $imagevalue->id;
+                       $imageList[$imagekey]['alt'] = $imagevalue->filename;
+                       $imageList[$imagekey]['src'] = "http://shoppyspot.com/shoppyspot-backend/web/".$imagevalue->filepath;
                     }
                      
                 }
@@ -159,14 +159,15 @@ class ProjectController extends \yii\web\Controller
                 $data['type'] = $productValue->product_type;
                 $data['size'] = $productValue->size;
                 $data['color_id'] = $productValue->size;
+                $data['discount'] =  $productValue->discount;
                 $imageDetails= TbProductsImages::find()->where(['product_id'=>$productValue->product_id])
                 ->all();
                 $imageList = [];
                 if(!empty($imageDetails) > 0){
-                    foreach ($imageDetails as $key => $imagevalue) {
-                       $imageList[$key]['id'] = $imagevalue->id;
-                       $imageList[$key]['alt'] = $imagevalue->filename;
-                       $imageList[$key]['src'] = "http://shoppyspot.com/shoppyspot-backend/web/".$imagevalue->filepath;
+                    foreach ($imageDetails as $imagekey => $imagevalue) {
+                       $imageList[$imagekey]['id'] = $imagevalue->id;
+                       $imageList[$imagekey]['alt'] = $imagevalue->filename;
+                       $imageList[$imagekey]['src'] = "http://shoppyspot.com/shoppyspot-backend/web/".$imagevalue->filepath;
                     }
                      
                 }
@@ -204,7 +205,7 @@ class ProjectController extends \yii\web\Controller
                 $data['color'] = $colorList;
 
 
-                $data['variants'] = '';
+                $data['variants'] = [["id"=> "1.1", "sku"=> "sku1", "size"=> "s", "color"=> "yellow", "image_id"=> 111, "__typename"=> "Variants"]];
         }
         
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
