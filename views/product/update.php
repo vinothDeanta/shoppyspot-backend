@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = 'Update';
 </div>
 <div class="container-fluid ecommerce-dash">
     <div class="tb-products-update">
-    <?= $this->render('_form', [
+    <?= $this->render('_formUpdate', [
         'model' => $model,
     ]) ?>
 
