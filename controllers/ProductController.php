@@ -12,6 +12,7 @@ use app\models\TbProductsImages;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 use app\models\TbTemplatePermission;
+use yii\web\ForbiddenHttpException;
 
 /**
  * ProductController implements the CRUD actions for TbProducts model.
@@ -122,38 +123,42 @@ class ProductController extends Controller
      */
     public function actionCreate()
     {
-        $model = new TbProducts();
+        if (\Yii::$app->user->can('create-product')) {
+            $model = new TbProducts();
 
-        if ($this->request->isPost) {
+            if ($this->request->isPost) {
 
-            if ($model->load($this->request->post())) {
+                if ($model->load($this->request->post())) {
 
-                $model->color_id = implode(",", \Yii::$app->request->post( 'TbProducts' )['color_id']); //convert the array into string
-                $model->size = implode(",", \Yii::$app->request->post( 'TbProducts' )['size']); //convert the array into string
-                $model->user_id = \Yii::$app->user->identity->id;
-                $model->save(); 
+                    $model->color_id = implode(",", \Yii::$app->request->post( 'TbProducts' )['color_id']); //convert the array into string
+                    $model->size = implode(",", \Yii::$app->request->post( 'TbProducts' )['size']); //convert the array into string
+                    $model->user_id = \Yii::$app->user->identity->id;
+                    $model->save(); 
 
-                //Mutiple File upload 
-                $model->files = UploadedFile::getInstances($model, 'files');
-                foreach ($model->files as $key => $file) {
-                    $modelImages = new TbProductsImages();
-                    $filepath = 'uploads/'.date("YmdHis")."_".microtime().'.' . $file->extension;
-                    $filepath = str_replace(" ","_", $filepath);
-                    $file->saveAs($filepath);
-                    $modelImages->filename = $file->baseName . '.' . $file->extension;
-                    $modelImages->filepath = $filepath;
-                    $modelImages->product_id = $model->product_id;
-                    $modelImages->save();
+                    //Mutiple File upload 
+                    $model->files = UploadedFile::getInstances($model, 'files');
+                    foreach ($model->files as $key => $file) {
+                        $modelImages = new TbProductsImages();
+                        $filepath = 'uploads/'.date("YmdHis")."_".microtime().'.' . $file->extension;
+                        $filepath = str_replace(" ","_", $filepath);
+                        $file->saveAs($filepath);
+                        $modelImages->filename = $file->baseName . '.' . $file->extension;
+                        $modelImages->filepath = $filepath;
+                        $modelImages->product_id = $model->product_id;
+                        $modelImages->save();
+                    }
+                    return $this->redirect(['view', 'product_id' => $model->product_id]);
                 }
-                return $this->redirect(['view', 'product_id' => $model->product_id]);
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
