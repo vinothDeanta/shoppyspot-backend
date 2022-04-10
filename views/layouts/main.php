@@ -256,108 +256,152 @@ AppAsset::register($this);
                                     <label class="badge badge-light-primary">2</label>
                                     <?= Html::a('<span class="lan-3">Dashboard</span>', ['site/index'],['class'=>'sidebar-link sidebar-title']) ?> 
                                 </li>
+                                
+                                <?php if (\Yii::$app->user->can('view-product')) { ?>
+                                    <li class="sidebar-list">
+                                        <label class="badge badge-light-info">New</label><a class="sidebar-link sidebar-title" href="#">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g>
+                                            <g>
+                                                <path d="M14.3053 15.45H8.90527" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M12.2604 11.4387H8.90442" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1598 8.3L14.4898 2.9C13.7598 2.8 12.9398 2.75 12.0398 2.75C5.74978 2.75 3.64978 5.07 3.64978 12C3.64978 18.94 5.74978 21.25 12.0398 21.25C18.3398 21.25 20.4398 18.94 20.4398 12C20.4398 10.58 20.3498 9.35 20.1598 8.3Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M13.9342 2.83276V5.49376C13.9342 7.35176 15.4402 8.85676 17.2982 8.85676H20.2492" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </g>
+                                            </g>
+                                        </svg><span>Products                </span></a>
+                                        <ul class="sidebar-submenu">
+                                        <li>
+                                            <?= Html::a('Product List', ['product/index'], ['data' => ['method' => 'post']]) ?>    
+                                            <!-- <a href="index.php?r=product/index">Project List</a> -->
+                                        </li>
+                                        <li>
+                                            <?php if (\Yii::$app->user->can('create-product')) { ?>
+                                                <?= Html::a('Create Product', ['product/create'], ['data' => ['method' => 'post']]) ?>
+                                            <?php  } ?>
+                                        </li>
+                                        </ul>
+                                    </li>
+                                <?php  } 
+                                    if (\Yii::$app->user->can('view-category')) {
+                                ?>
+                                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g> 
+                                            <g> 
+                                                <path d="M15.7499 9.47167V6.43967C15.7549 4.35167 14.0659 2.65467 11.9779 2.64967C9.88887 2.64567 8.19287 4.33467 8.18787 6.42267V9.47167" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.94995 14.2074C2.94995 8.91344 5.20495 7.14844 11.969 7.14844C18.733 7.14844 20.988 8.91344 20.988 14.2074C20.988 19.5004 18.733 21.2654 11.969 21.2654C5.20495 21.2654 2.94995 19.5004 2.94995 14.2074Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </g>
+                                            </g>
+                                        </svg><span>Category                </span></a>
+                                        <ul class="sidebar-submenu">
+                                        <li>
+                                            <?= Html::a('Category List', ['category/index'], ['data' => ['method' => 'post']]) ?>    
+                                        </li>
+                                        <li>
+                                            <?= Html::a('Category Create', ['category/create'], ['data' => ['method' => 'post']]) ?>
+                                        </li>
+                                        </ul>
+                                    </li>
+                                <?php  } 
+                                    if (\Yii::$app->user->can('view-sub-category')) {
+                                ?>
+                                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+                                    <i class="fa fa-certificate" style="padding-right: 13px;" aria-hidden="true"></i><span>Sub Category                </span></a>
+                                        <ul class="sidebar-submenu">
+                                        <li>
+                                            <?= Html::a('Sub Category List', ['sub/index'], ['data' => ['method' => 'post']]) ?>    
+                                        </li>
+                                        <li>
+                                            <?= Html::a('Sub Category Create', ['sub/create'], ['data' => ['method' => 'post']]) ?>
+                                        </li>
+                                        </ul>
+                                    </li>
+                                <?php  } 
+                                    if (\Yii::$app->user->can('view-user')) {
+                                ?>
                             
-                                <li class="sidebar-list">
-                                    <label class="badge badge-light-info">New</label><a class="sidebar-link sidebar-title" href="#">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g>
-                                        <g>
-                                            <path d="M14.3053 15.45H8.90527" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path d="M12.2604 11.4387H8.90442" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.1598 8.3L14.4898 2.9C13.7598 2.8 12.9398 2.75 12.0398 2.75C5.74978 2.75 3.64978 5.07 3.64978 12C3.64978 18.94 5.74978 21.25 12.0398 21.25C18.3398 21.25 20.4398 18.94 20.4398 12C20.4398 10.58 20.3498 9.35 20.1598 8.3Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path d="M13.9342 2.83276V5.49376C13.9342 7.35176 15.4402 8.85676 17.2982 8.85676H20.2492" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </g>
-                                        </g>
-                                    </svg><span>Products                </span></a>
-                                    <ul class="sidebar-submenu">
-                                    <li>
-                                        <?= Html::a('Product List', ['product/index'], ['data' => ['method' => 'post']]) ?>    
-                                         <!-- <a href="index.php?r=product/index">Project List</a> -->
+                                    <li class="sidebar-list">
+                                        <a class="sidebar-link sidebar-title" href="#">
+                                            <i class="fa fa-users" style="padding-right: 13px;" aria-hidden="true"></i>
+                                            <span>Users</span>
+                                        </a>
+                                        <ul class="sidebar-submenu">
+                                            <li>
+                                                <?= Html::a('Users List', ['user/index'], ['data' => ['method' => 'post']]) ?>    
+                                            </li>
+                                            <li>
+                                                <?= Html::a('User Create', ['user/create'], ['data' => ['method' => 'post']]) ?>
+                                            </li>
+                                        </ul>
                                     </li>
-                                    <li>
-                                        <?= Html::a('Create Product', ['product/create'], ['data' => ['method' => 'post']]) ?>
-                                    </li>
-                                    </ul>
-                                </li>
-
-                                <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g> 
-                                        <g> 
-                                            <path d="M15.7499 9.47167V6.43967C15.7549 4.35167 14.0659 2.65467 11.9779 2.64967C9.88887 2.64567 8.19287 4.33467 8.18787 6.42267V9.47167" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.94995 14.2074C2.94995 8.91344 5.20495 7.14844 11.969 7.14844C18.733 7.14844 20.988 8.91344 20.988 14.2074C20.988 19.5004 18.733 21.2654 11.969 21.2654C5.20495 21.2654 2.94995 19.5004 2.94995 14.2074Z" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                        </g>
-                                        </g>
-                                    </svg><span>Category                </span></a>
-                                    <ul class="sidebar-submenu">
-                                    <li>
-                                        <?= Html::a('Category List', ['category/index'], ['data' => ['method' => 'post']]) ?>    
-                                    </li>
-                                    <li>
-                                        <?= Html::a('Category Create', ['category/create'], ['data' => ['method' => 'post']]) ?>
-                                    </li>
-                                    </ul>
-                                </li>
-
-                                <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
-                                <i class="fa fa-certificate" style="padding-right: 13px;" aria-hidden="true"></i><span>Sub Category                </span></a>
-                                    <ul class="sidebar-submenu">
-                                    <li>
-                                        <?= Html::a('Sub Category List', ['sub/index'], ['data' => ['method' => 'post']]) ?>    
-                                    </li>
-                                    <li>
-                                        <?= Html::a('Sub Category Create', ['sub/create'], ['data' => ['method' => 'post']]) ?>
-                                    </li>
-                                    </ul>
-                                </li>
-
-                            
-                                <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title" href="#">
-                                        <i class="fa fa-users" style="padding-right: 13px;" aria-hidden="true"></i>
-                                        <span>Users</span>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li>
-                                            <?= Html::a('Users List', ['user/index'], ['data' => ['method' => 'post']]) ?>    
+                                
+                                <?php  
+                                    } 
+                                    if (\Yii::$app->user->can('view-project-template')) {
+                                ?>
+                                     <li class="sidebar-list">
+                                            <a class="sidebar-link sidebar-title" href="#">
+                                                <i class="fa fa-book" style="padding-right: 13px;" aria-hidden="true"></i>
+                                                <span>Templates</span>
+                                            </a>
+                                            <ul class="sidebar-submenu">
+                                                <li>
+                                                    <?= Html::a('Template List', ['permission/index'], ['data' => ['method' => 'post']]) ?>    
+                                                </li>
+                                                <li>
+                                                    <?= Html::a('Template Create', ['permission/create'], ['data' => ['method' => 'post']]) ?>
+                                                </li>
+                                            </ul>
                                         </li>
-                                        <li>
-                                            <?= Html::a('User Create', ['user/create'], ['data' => ['method' => 'post']]) ?>
-                                        </li>
-                                    </ul>
-                                </li>
 
-                                <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title" href="#">
-                                        <i class="fa fa-book" style="padding-right: 13px;" aria-hidden="true"></i>
-                                        <span>Templates</span>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li>
-                                            <?= Html::a('Template List', ['permission/index'], ['data' => ['method' => 'post']]) ?>    
+                                <?php  
+                                    } 
+                                    if (\Yii::$app->user->can('view-attributes')) 
+                                    {
+                                ?>
+                                        <li class="sidebar-list">
+                                            <a class="sidebar-link sidebar-title" href="#">
+                                                <i class="fa fa-book" style="padding-right: 13px;" aria-hidden="true"></i>
+                                                <span>Product Attribute</span>
+                                            </a>
+                                            <ul class="sidebar-submenu">
+                                                <li>
+                                                    <?= Html::a('Size List', ['size/index'], ['data' => ['method' => 'post']]) ?>    
+                                                </li>
+                                                <li>
+                                                    <?= Html::a('Color List', ['color/index'], ['data' => ['method' => 'post']]) ?>    
+                                                </li>
+                                            
+                                            </ul>
                                         </li>
-                                        <li>
-                                            <?= Html::a('Template Create', ['permission/create'], ['data' => ['method' => 'post']]) ?>
-                                        </li>
-                                    </ul>
-                                </li>
+                                        <?php  
+                                    } 
+                                    if (\Yii::$app->user->can('view-roles-access')) 
+                                    {
+                                ?>
 
-                                <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title" href="#">
-                                        <i class="fa fa-book" style="padding-right: 13px;" aria-hidden="true"></i>
-                                        <span>Product Attribute</span>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li>
-                                            <?= Html::a('Size List', ['size/index'], ['data' => ['method' => 'post']]) ?>    
+                                        <li class="sidebar-list">
+                                            <a class="sidebar-link sidebar-title" href="#">
+                                                <i class="fa fa-user-secret" style="padding-right: 13px;" aria-hidden="true"></i>
+                                                <span>Access Control</span>
+                                            </a>
+                                            <ul class="sidebar-submenu">
+                                                <li>
+                                                    <?= Html::a('Roles List', ['assignment/index'], ['data' => ['method' => 'post']]) ?>    
+                                                </li>
+                                                <li>
+                                                    <?= Html::a('Pernission List', ['roles/index'], ['data' => ['method' => 'post']]) ?>    
+                                                </li>
+                                                <li>
+                                                    <?= Html::a('Roles Has Permission List', ['child/index'], ['data' => ['method' => 'post']]) ?>    
+                                                </li>
+                                            
+                                            </ul>
                                         </li>
-                                        <li>
-                                            <?= Html::a('Color List', ['color/index'], ['data' => ['method' => 'post']]) ?>    
-                                        </li>
-                                       
-                                    </ul>
-                                </li>
+                                <?php } ?>
 
+                                
 
 
                                 </ul>
