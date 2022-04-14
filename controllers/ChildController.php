@@ -41,13 +41,17 @@ class ChildController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AuthItemChildSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (\Yii::$app->user->can('view-has-permission')) {
+            $searchModel = new AuthItemChildSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -59,9 +63,13 @@ class ChildController extends Controller
      */
     public function actionView($parent, $child)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($parent, $child),
-        ]);
+        if (\Yii::$app->user->can('view-has-permission')) {
+            return $this->render('view', [
+                'model' => $this->findModel($parent, $child),
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -71,19 +79,23 @@ class ChildController extends Controller
      */
     public function actionCreate()
     {
-        $model = new AuthItemChild();
+        if (\Yii::$app->user->can('create-has-permission')) {
+            $model = new AuthItemChild();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -96,15 +108,19 @@ class ChildController extends Controller
      */
     public function actionUpdate($parent, $child)
     {
-        $model = $this->findModel($parent, $child);
+        if (\Yii::$app->user->can('edit-has-permission')) {
+            $model = $this->findModel($parent, $child);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -117,9 +133,13 @@ class ChildController extends Controller
      */
     public function actionDelete($parent, $child)
     {
-        $this->findModel($parent, $child)->delete();
+        if (\Yii::$app->user->can('delete-has-permission')) {
+            $this->findModel($parent, $child)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**

@@ -56,15 +56,19 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TbProductsSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (\Yii::$app->user->can('view-product')) {
+            $searchModel = new TbProductsSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
-
+    
     /**
      * Displays a single TbProducts model.
      * @param int $product_id Product ID
@@ -170,19 +174,23 @@ class ProductController extends Controller
      */
     public function actionUpdate($product_id)
     {
-        $model = $this->findModel($product_id);
+        if (\Yii::$app->user->can('update-product')) {
+            $model = $this->findModel($product_id);
 
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            $model->color_id = implode(",", \Yii::$app->request->post( 'TbProducts' )['color_id']); //convert the array into string
-            $model->size = implode(",", \Yii::$app->request->post( 'TbProducts' )['size']); //convert the array into string
-            $model->save();  
+            if ($this->request->isPost && $model->load($this->request->post())) {
+                $model->color_id = implode(",", \Yii::$app->request->post( 'TbProducts' )['color_id']); //convert the array into string
+                $model->size = implode(",", \Yii::$app->request->post( 'TbProducts' )['size']); //convert the array into string
+                $model->save();  
 
-            return $this->redirect(['view', 'product_id' => $model->product_id]);
+                return $this->redirect(['view', 'product_id' => $model->product_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -194,9 +202,12 @@ class ProductController extends Controller
      */
     public function actionDelete($product_id)
     {
-        $this->findModel($product_id)->delete();
-
-        return $this->redirect(['index']);
+        if (\Yii::$app->user->can('delete-product')) {
+            $this->findModel($product_id)->delete();
+            return $this->redirect(['index']);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**

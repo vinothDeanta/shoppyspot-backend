@@ -51,14 +51,18 @@ class SubController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        $searchModel = new SubCategorySearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+    {   
+        if (\Yii::$app->user->can('view-sub-category')) {
+            $searchModel = new SubCategorySearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -69,9 +73,13 @@ class SubController extends Controller
      */
     public function actionView($sub_category_id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($sub_category_id),
-        ]);
+        if (\Yii::$app->user->can('view-sub-category')) {
+            return $this->render('view', [
+                'model' => $this->findModel($sub_category_id),
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -81,19 +89,23 @@ class SubController extends Controller
      */
     public function actionCreate()
     {
-        $model = new SubCategory();
+        if (\Yii::$app->user->can('create-sub-category')) {
+            $model = new SubCategory();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'sub_category_id' => $model->sub_category_id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'sub_category_id' => $model->sub_category_id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -105,15 +117,19 @@ class SubController extends Controller
      */
     public function actionUpdate($sub_category_id)
     {
-        $model = $this->findModel($sub_category_id);
+        if (\Yii::$app->user->can('edit-sub-category')) {
+            $model = $this->findModel($sub_category_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'sub_category_id' => $model->sub_category_id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'sub_category_id' => $model->sub_category_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -125,9 +141,13 @@ class SubController extends Controller
      */
     public function actionDelete($sub_category_id)
     {
-        $this->findModel($sub_category_id)->delete();
+        if (\Yii::$app->user->can('delete-sub-category')) {
+            $this->findModel($sub_category_id)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**

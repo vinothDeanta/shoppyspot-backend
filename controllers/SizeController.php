@@ -38,13 +38,17 @@ class SizeController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TbSizeSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (\Yii::$app->user->can('view-attributes')) {
+            $searchModel = new TbSizeSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -55,9 +59,13 @@ class SizeController extends Controller
      */
     public function actionView($size_id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($size_id),
-        ]);
+        if (\Yii::$app->user->can('view-attributes')) {
+            return $this->render('view', [
+                'model' => $this->findModel($size_id),
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -67,19 +75,24 @@ class SizeController extends Controller
      */
     public function actionCreate()
     {
-        $model = new TbSize();
+        if (\Yii::$app->user->can('create-attributes')) {
+        
+            $model = new TbSize();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'size_id' => $model->size_id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'size_id' => $model->size_id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -91,15 +104,19 @@ class SizeController extends Controller
      */
     public function actionUpdate($size_id)
     {
-        $model = $this->findModel($size_id);
+        if (\Yii::$app->user->can('edit-attributes')) {
+            $model = $this->findModel($size_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'size_id' => $model->size_id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'size_id' => $model->size_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -111,6 +128,7 @@ class SizeController extends Controller
      */
     public function actionDelete($size_id)
     {
+        if (\Yii::$app->user->can('delete-attributes')) {
         $this->findModel($size_id)->delete();
 
         return $this->redirect(['index']);
