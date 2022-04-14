@@ -38,13 +38,17 @@ class RolesController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AuthItemSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (\Yii::$app->user->can('view-permission')) {
+            $searchModel = new AuthItemSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -55,9 +59,13 @@ class RolesController extends Controller
      */
     public function actionView($name)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($name),
-        ]);
+        if (\Yii::$app->user->can('view-permission')) {
+            return $this->render('view', [
+                'model' => $this->findModel($name),
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -67,19 +75,23 @@ class RolesController extends Controller
      */
     public function actionCreate()
     {
-        $model = new AuthItem();
+        if (\Yii::$app->user->can('create-permission')) {
+            $model = new AuthItem();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'name' => $model->name]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'name' => $model->name]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -91,15 +103,19 @@ class RolesController extends Controller
      */
     public function actionUpdate($name)
     {
-        $model = $this->findModel($name);
+        if (\Yii::$app->user->can('edit-permission')) {
+            $model = $this->findModel($name);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'name' => $model->name]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'name' => $model->name]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -111,9 +127,13 @@ class RolesController extends Controller
      */
     public function actionDelete($name)
     {
-        $this->findModel($name)->delete();
+        if (\Yii::$app->user->can('delete-permission')) {
+            $this->findModel($name)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**

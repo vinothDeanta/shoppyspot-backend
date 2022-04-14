@@ -51,13 +51,17 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CategorySearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (\Yii::$app->user->can('view-category')) {
+            $searchModel = new CategorySearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -67,10 +71,14 @@ class CategoryController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($category_id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($category_id),
-        ]);
+    {   
+        if (\Yii::$app->user->can('view-category')) {
+            return $this->render('view', [
+                'model' => $this->findModel($category_id),
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -80,19 +88,22 @@ class CategoryController extends Controller
      */
     public function actionCreate()
     {
-        $model = new TbCategory();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'category_id' => $model->category_id]);
+        if (\Yii::$app->user->can('create-category')) {
+            $model = new TbCategory();
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'category_id' => $model->category_id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -104,15 +115,19 @@ class CategoryController extends Controller
      */
     public function actionUpdate($category_id)
     {
-        $model = $this->findModel($category_id);
+        if (\Yii::$app->user->can('edit-category')) {
+            $model = $this->findModel($category_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'category_id' => $model->category_id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'category_id' => $model->category_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -124,9 +139,12 @@ class CategoryController extends Controller
      */
     public function actionDelete($category_id)
     {
-        $this->findModel($category_id)->delete();
-
-        return $this->redirect(['index']);
+        if (\Yii::$app->user->can('delete-category')) {
+            $this->findModel($category_id)->delete();
+            return $this->redirect(['index']);
+        }  else{
+            return $this->render('../error');
+        }
     }
 
     /**

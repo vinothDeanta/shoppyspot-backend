@@ -38,13 +38,17 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (\Yii::$app->user->can('view-user')) {
+            $searchModel = new UserSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -55,9 +59,13 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (\Yii::$app->user->can('view-user')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -67,32 +75,36 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Users();
+        if (\Yii::$app->user->can('create-user')) {
+            $model = new Users();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                if ($model->validate()) {
-                    // form inputs are valid, do something here
-                    $model->username = $_POST['Users']['username'];
-                    $model->user_email = $_POST['Users']['user_email'];
-                    $model->password = password_hash($_POST['Users']['password'], PASSWORD_ARGON2I);
-                    $model->authKey = md5(random_bytes(5));
-                    $model->phone_no = $_POST['Users']['password'];
-                    $model->accessToken = password_hash(random_bytes(10), PASSWORD_DEFAULT);
-                    $model->city = $_POST['Users']['city'];
-                    if($model->save()){
-                        return $this->redirect(['view', 'id' => $model->id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post())) {
+                    if ($model->validate()) {
+                        // form inputs are valid, do something here
+                        $model->username = $_POST['Users']['username'];
+                        $model->user_email = $_POST['Users']['user_email'];
+                        $model->password = password_hash($_POST['Users']['password'], PASSWORD_ARGON2I);
+                        $model->authKey = md5(random_bytes(5));
+                        $model->phone_no = $_POST['Users']['password'];
+                        $model->accessToken = password_hash(random_bytes(10), PASSWORD_DEFAULT);
+                        $model->city = $_POST['Users']['city'];
+                        if($model->save()){
+                            return $this->redirect(['view', 'id' => $model->id]);
+                        }
+                    
                     }
-                   
                 }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+                return $this->render('../error');
+        }
     }
 
     /**
@@ -104,15 +116,20 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        if (\Yii::$app->user->can('edit-user')) {
+        
+            $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -124,9 +141,13 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (\Yii::$app->user->can('edit-user')) {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**

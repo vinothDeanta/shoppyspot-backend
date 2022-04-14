@@ -387,15 +387,25 @@ AppAsset::register($this);
                                                 <span>Access Control</span>
                                             </a>
                                             <ul class="sidebar-submenu">
+                                                <?php   
+                                                    if (\Yii::$app->user->can('view-role-control')) {
+                                                ?>
                                                 <li>
                                                     <?= Html::a('Roles List', ['assignment/index'], ['data' => ['method' => 'post']]) ?>    
                                                 </li>
+                                                <?php }  
+                                                    if (\Yii::$app->user->can('view-permission')) {
+                                                ?>
                                                 <li>
                                                     <?= Html::a('Pernission List', ['roles/index'], ['data' => ['method' => 'post']]) ?>    
                                                 </li>
+                                                <?php }  
+                                                    if (\Yii::$app->user->can('view-has-permission')) {
+                                                ?>
                                                 <li>
                                                     <?= Html::a('Roles Has Permission List', ['child/index'], ['data' => ['method' => 'post']]) ?>    
                                                 </li>
+                                                <?php } ?>
                                             
                                             </ul>
                                         </li>

@@ -39,13 +39,17 @@ class AssignmentController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AuthAssignmentSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if (\Yii::$app->user->can('view-role-control')) {
+            $searchModel = new AuthAssignmentSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -58,9 +62,13 @@ class AssignmentController extends Controller
      */
     public function actionView($id, $item_name, $user_id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id, $item_name, $user_id),
-        ]);
+        if (\Yii::$app->user->can('view-role-control')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id, $item_name, $user_id),
+            ]);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
@@ -70,19 +78,24 @@ class AssignmentController extends Controller
      */
     public function actionCreate()
     {
-        $model = new AuthAssignment();
+        if (\Yii::$app->user->can('create-role-control')) {
+            $model = new AuthAssignment();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save(false)) {
-                return $this->redirect(['view', 'id' => $model->id, 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save(false)) {
+                    return $this->redirect(['view', 'id' => $model->id, 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
-        }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
+        }
+        
     }
 
     /**
@@ -96,15 +109,19 @@ class AssignmentController extends Controller
      */
     public function actionUpdate($id, $item_name, $user_id)
     {
-        $model = $this->findModel($id, $item_name, $user_id);
+        if (\Yii::$app->user->can('edit-role-control')) {
+            $model = $this->findModel($id, $item_name, $user_id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id, 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+            }
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        } else{
+            return $this->render('../error');
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -118,9 +135,13 @@ class AssignmentController extends Controller
      */
     public function actionDelete($id, $item_name, $user_id)
     {
-        $this->findModel($id, $item_name, $user_id)->delete();
+        if (\Yii::$app->user->can('delete-role-control')) {
+            $this->findModel($id, $item_name, $user_id)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        } else{
+            return $this->render('../error');
+        }
     }
 
     /**
